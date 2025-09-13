@@ -7,8 +7,8 @@ import { Background } from "../game/Background";
 import GameOverModal from "./GameOverModal";
 import Intro from "./Intro";
 import gameBgImgSrc from "../assets/gamebackground.png";
-import birthdaySoundSrc from "../assets/birthday.mp3";
-import narutoActionSrc from "../assets/naruto-action.mp3";
+import birthdaySoundSrc from "../assets/birthday.MP3";
+import narutoActionSrc from "../assets/naruto-action.MP3";
 import gameOverSoundSrc from "../assets/gameover.mp3";
 
 export default function GameCanvas({ onScoreChange, onPowerChange }) {

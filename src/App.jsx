@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GameCanvas from "./components/GameCanvas";
 import HUD from "./components/HUD";
+import './App.css';
 
 export default function App() {
   const [score, setScore] = useState(0);
@@ -13,6 +14,8 @@ export default function App() {
         onScoreChange={setScore}
         onPowerChange={setPower}
       />
+      <p className="control"> Click on spacebar to pause or resume</p>
     </div>
+    
   );
 }
