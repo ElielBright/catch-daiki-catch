@@ -317,6 +317,24 @@
     background: linear-gradient(135deg, #0047a3, #0077cc);
   }
   
+
+  .mobile-controls {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  
+  .mobile-controls button {
+    font-size: 2rem;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.7);
+    border: none;
+    border-radius: 10px;
+  }
+  
   
   /* 
      Responsive queries
