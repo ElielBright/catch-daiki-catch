@@ -22,7 +22,6 @@ export default function GameCanvas({ onScoreChange, onPowerChange }) {
   const powerRef = useRef(false);
   const keysRef = useRef({});
   const touchKeysRef = useRef({ left: false, right: false });
-  const lastTapRef = useRef(0);
 
   const audioRefs = useRef({
     birthday: null,
@@ -39,6 +38,7 @@ export default function GameCanvas({ onScoreChange, onPowerChange }) {
   }, []);
 
   const togglePause = () => setIsPaused(prev => !prev);
+
   const toggleMute = () => {
     setMute(prev => {
       const newMute = !prev;
@@ -46,12 +46,14 @@ export default function GameCanvas({ onScoreChange, onPowerChange }) {
       return newMute;
     });
   };
+
   const playAudio = (key, loop = false) => {
     const audio = audioRefs.current[key];
     if (!audio) return;
     audio.loop = loop;
     audio.play().catch(() => {});
   };
+
   const pauseAudio = (key) => {
     const audio = audioRefs.current[key];
     if (audio && !audio.paused) audio.pause();
@@ -112,7 +114,6 @@ export default function GameCanvas({ onScoreChange, onPowerChange }) {
       if (background) { background.update(canvas.width); background.draw(ctx, canvas.width, canvas.height); }
       else { ctx.fillStyle = "#cce7ff"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 
-      // Combine keyboard + touch
       const combinedKeys = {
         ...keysRef.current,
         ArrowLeft: keysRef.current.ArrowLeft || touchKeysRef.current.left,
@@ -164,14 +165,9 @@ export default function GameCanvas({ onScoreChange, onPowerChange }) {
     };
     const keyUpHandler = (e) => { keysRef.current[e.key] = false; };
 
+    // TOUCH HANDLERS (double-tap pause removed)
     const touchStartHandler = (e) => {
       const width = window.innerWidth;
-      const now = new Date().getTime();
-
-      if (now - lastTapRef.current < 300) { togglePause(); e.preventDefault(); }
-      lastTapRef.current = now;
-
-      // Detect all touches
       const left = Array.from(e.touches).some(t => t.clientX < width / 2);
       const right = Array.from(e.touches).some(t => t.clientX >= width / 2);
       touchKeysRef.current = { left, right };
