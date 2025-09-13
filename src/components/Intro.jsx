@@ -11,40 +11,31 @@ export default function Intro({ onFinish, mute, birthdayAudioRef }) {
     "Only then can he save everyone..."
   ];
 
-  // Play birthday audio on mount
-  useEffect(() => {
-    if (birthdayAudioRef.current) {
-      birthdayAudioRef.current.muted = mute;
-      birthdayAudioRef.current.play();
-    }
-  }, []);
-
   const next = () => {
     if (step === 0) {
-      // Move to story
+      // User clicked, safe to play birthday song if not muted
+      if (birthdayAudioRef.current) {
+        birthdayAudioRef.current.muted = mute;
+        birthdayAudioRef.current.play().catch(() => {});
+      }
       setStep(1);
-      if (birthdayAudioRef.current) birthdayAudioRef.current.pause(); // stop birthday audio
+      if (birthdayAudioRef.current) birthdayAudioRef.current.pause();
+    } else if (step === 1 && storyIndex + 1 < storyTexts.length) {
+      // Advance story manually
+      setStoryIndex(storyIndex + 1);
     } else {
-      // Go to game
-      onFinish(); // triggers GameCanvas to start naruto-action
+      // End intro, start game
+      onFinish();
     }
   };
 
-  // Auto-advance story texts
+  // Auto-advance story
   useEffect(() => {
-    if (step === 1) {
-      const interval = setInterval(() => {
-        setStoryIndex((prev) => {
-          if (prev + 1 >= storyTexts.length) {
-            clearInterval(interval);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 4000); // 4s per story text
+    if (step === 1 && storyIndex < storyTexts.length - 1) {
+      const interval = setInterval(() => setStoryIndex((prev) => prev + 1), 4000);
       return () => clearInterval(interval);
     }
-  }, [step]);
+  }, [step, storyIndex, storyTexts.length]);
 
   return (
     <div className="story-overlay">
@@ -57,7 +48,6 @@ export default function Intro({ onFinish, mute, birthdayAudioRef }) {
       ) : (
         <>
           <h1>{storyTexts[storyIndex]}</h1>
-          <p>{storyIndex + 1 === storyTexts.length ? "Click Next to start!" : ""}</p>
           {storyIndex + 1 === storyTexts.length && <button onClick={next}>Next</button>}
         </>
       )}
