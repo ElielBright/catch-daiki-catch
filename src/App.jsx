@@ -14,7 +14,8 @@ export default function App() {
         onScoreChange={setScore}
         onPowerChange={setPower}
       />
-      <p className="control"> Click on spacebar to pause or resume</p>
+            <p className="control"> On Mobile touch left or right to control movement</p>
+      <p className="control"> On keyboard use left or right arrow keys to control movement</p>
     </div>
     
   );
